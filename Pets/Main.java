@@ -2,58 +2,57 @@ package Pets;
 
 import java.util.Scanner;
 
-// Enum para e present ang  klasing-klaseng sa hayop
-enum PetType {
-    DOG, CAT, BIRD
-}
-
 public class Main {
     static Scanner scanner = new Scanner(System.in);
     static Pet pet;
 
+    static String[] colors = { // array
+            "\u001B[33m\u001B[1m", // YELLOW (bold)[0]
+            "\u001B[31m", // RED[1]
+            "\u001B[32m", // GREEN[2]
+            "\u001B[33m", // YELLOW[3]
+            "\u001B[34m", // BLUE[4]
+            "\u001B[35m", // MAGENTA[5]
+            "\u001B[36m", // CYAN[6]
+            "\u001B[37m", // WHITE[7]
+            "\u001B[0m" // RESET[8]
+    };
+
     public static void main(String[] args) {
         // intro og welcome message sa user
-        System.out.println("\t\t Welcome to Pet Simulator!");
-        System.out.println("------------------------------------------------------------------");
+        System.out.println(colors[0] + "\t\t Welcome to Pet Simulator!" + colors[8]);
+        System.out
+                .println(colors[6] + "------------------------------------------------------------------" + colors[8]);
 
-        // Pangayog pangalan sa pet's
+        // pangalan sa pet's
         System.out.print("Enter your pet's name: ");
         String name = scanner.nextLine();
 
-        // pilianan sa user
+        // Pilianan sa user
         System.out.print("Choose a pet type: ([1]Dog, [2]Cat, [3]Bird): ");
         int choice = scanner.nextInt();
 
         // Paggamit sa enum para makuha ang pet type nga gipili sa user
         PetType petType = PetType.values()[choice - 1]; // Pagkuha sa enum value base sa input
 
-        switch (petType) { // Pagbuhat sa husto nga Pet object depende sa gipiling pet type
-            case DOG:
-                pet = new Dog(name); // Kung Dog ang gipili, buhaton ang Dog object
-                break;
-            case CAT:
-                pet = new Cat(name); // Kung Cat ang gipili, buhaton ang Cat object
-                break;
-            case BIRD:
-                pet = new Bird(name); // Kung Bird ang gipili, buhaton ang Bird object
-                break;
-            default:
-                pet = new Dog(name); // Kung wala masabti ang input, buhaton lang og Dog (default case)
-        }
+        // Use the PetFactory to create the pet instance
+        pet = PetFactory.createPet(petType, name);
 
         // Interaction sa pet (while loop hangtud mag-exit ang user)
         while (true) {
-            System.out.println("------------------------------------------------------------------");
+            System.out.println(
+                    colors[6] + "------------------------------------------------------------------" + colors[8]);
             System.out.println("\nWhat would you like to do?");
-            System.out.println("1. Feed your pet");
-            System.out.println("2. Play with your pet");
+            System.out.println("1. Feed your pet " + pet.name);
+            System.out.println("2. Play with your pet " + pet.name);
             System.out.println("3. Make your pet sound");
             System.out.println("4. Special action for " + pet.getName());
-            System.out.println("5. Check pet status");
+            System.out.println("5. Check pet status of " + pet.name);
             System.out.println("6. Save pet");
             System.out.println("7. Load pet");
             System.out.println("8. Exit");
-            System.out.println("------------------------------------------------------------------");
+            System.out.println(
+                    colors[6] + "------------------------------------------------------------------" + colors[8]);
             System.out.print("Choose: ");
             int action = scanner.nextInt(); // Pagkuha sa action nga gusto buhaton sa user
 
@@ -90,7 +89,7 @@ public class Main {
                     pet = SaveManager.loadPet();
                     break;
                 case 8:
-                    System.out.println("Exiting... Goodbye!");
+                    System.out.println(colors[3] + "Exiting... Goodbye!" + colors[8]);
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
